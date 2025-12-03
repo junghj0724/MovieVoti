@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+/* 공통 컨테이너 (로그인, 회원가입, 마이페이지) */
+.member-container {
+    max-width: 400px;
+    margin: 100px auto; /* 상단 여백 통일 */
+    padding: 20px;
+}
+
+.member-container.wide {
+    max-width: 500px; /* 마이페이지용 넓은 폭 */
+}
+
+.member-container.center {
+    text-align: center; /* 로그인 페이지용 중앙 정렬 */
+}
+
+.member-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #292a32;
+}
+
+/* 폼 요소 */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left; /* 컨테이너가 center여도 폼 내부는 왼쪽 정렬 */
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #292a32;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: #ff2f6e;
+    outline: none;
+}
+
+/* 버튼 */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff2f6e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #e62a63;
+}
+
+.btn-submit.dark {
+    background-color: #292a32; /* 마이페이지 수정 버튼 */
+}
+
+.btn-submit.dark:hover {
+    background-color: #3d3e48;
+}
+
+/* 메시지 */
+.msg-box {
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.msg-error {
+    color: #ff0000;
+}
+
+.msg-success {
+    color: #ff2f6e;
+    font-weight: bold;
+}
+
+/* 하단 링크 (회원가입 이동 등) */
+.member-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+}
+
+.member-link a {
+    color: #ff2f6e;
+    font-weight: bold;
+}
+
+/* 마이페이지 전용 텍스트 */
+.info-label {
+    color: #7e7e7e;
+    font-size: 14px;
+}
+
+.info-value {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #292a32;
+}

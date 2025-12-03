@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/* 검색 결과 페이지 전용 스타일 */
+.search-container {
+    max-width: 1320px;
+    margin: 100px auto;
+    padding: 0 20px;
+}
+
+.search-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #292a32;
+}
+
+.search-title .highlight {
+    color: #ff2f6e;
+}
+
+.search-count {
+    font-size: 16px;
+    color: #888;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+/* ★ 포스터 크기 고정 (메인 페이지와 동일한 로직 적용) ★ */
+.movie-card .poster-wrapper {
+    position: relative;
+    width: 100%;
+    /* 가로 1 : 세로 1.5 비율 (2:3) 강제 고정 */
+    padding-top: 150%; 
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #eae9e8;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+}
+
+.movie-card .poster-wrapper img {
+    /* 이미지를 padding으로 만든 공간에 절대 위치로 꽉 채움 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율 유지하며 꽉 채우기 */
+    transition: transform 0.3s;
+}
+
+.movie-card:hover .poster-wrapper img {
+    transform: scale(1.05);
+}
+
+/* 검색 결과 없음 */
+.no-result {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 100px 0;
+    color: #888;
+}
+
+.no-result i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.no-result p {
+    font-size: 16px;
+}

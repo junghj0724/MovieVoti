@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+.detail-container {
+    max-width: 1000px;
+    margin: 100px auto 50px;
+    padding: 0 20px;
+}
+
+/* 상단 정보 섹션 */
+.movie-header {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+    align-items: flex-start; /* 포스터와 정보란 상단 정렬 */
+}
+
+/* ★ 포스터 크기 및 비율 고정 (수정됨) ★ */
+.detail-poster {
+    width: 300px;
+    height: 450px;       /* 가로 300px 대비 1.5배 (2:3 비율) 강제 지정 */
+    object-fit: cover;   /* 비율이 안 맞아도 찌그러지지 않고 꽉 채움 */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: #f0f0f0; /* 이미지가 늦게 뜰 때 배경색 */
+    flex-shrink: 0;      /* 화면이 줄어들어도 포스터 크기는 줄어들지 않음 */
+}
+
+.movie-meta {
+    flex: 1;
+}
+
+.movie-meta h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.movie-meta .eng-title {
+    color: #777;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.meta-list p {
+    margin: 8px 0;
+    color: #555;
+    font-size: 15px;
+}
+
+.plot-box {
+    margin-top: 30px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.plot-box h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #292a32;
+}
+
+/* 예고편 박스 스타일 */
+.trailer-box {
+    margin-top: 40px;
+}
+
+.trailer-box h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #292a32;
+}
+
+/* 리뷰 섹션 */
+.review-section {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 50px;
+}
+
+.review-section h3 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.review-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+.rating-select {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.review-input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 리뷰 리스트 */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-item {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    gap: 15px;
+}
+
+.reviewer-face {
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.review-content {
+    flex: 1;
+}
+
+.review-content .u-name {
+    font-weight: bold;
+    margin-bottom: 6px;
+    display: block;
+    font-size: 14px;
+}
+
+.star-score {
+    color: #ff2f6e;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.review-content p {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}

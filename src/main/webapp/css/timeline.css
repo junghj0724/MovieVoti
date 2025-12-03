@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+/* 타임라인 전용 스타일 */
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.timeline-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.timeline-list {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* 수직선 */
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 6px;
+    width: 2px;
+    background: #e5e5e5;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 30px;
+}
+
+/* 동그라미 점 */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff2f6e;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px #e5e5e5;
+    z-index: 1;
+}
+
+.date-label {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.diary-card {
+    display: flex;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.diary-poster {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.diary-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.movie-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.meta-info {
+    font-size: 13px;
+    color: #7e7e7e;
+    margin-bottom: 15px;
+}
+
+.comment-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* ★ 추가된 부분: 데이터 없음 메시지 스타일 ★ */
+.empty-msg { 
+    text-align: center; 
+    padding: 100px 0; 
+    color: #888; 
+}
+.empty-msg i {
+    font-size: 40px; 
+    margin-bottom: 15px; 
+    color: #ddd;
+}
+.empty-msg p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+.empty-msg a {
+    color: #ff2f6e; 
+    font-weight: bold; 
+    margin-top: 15px; 
+    display: inline-block;
+}

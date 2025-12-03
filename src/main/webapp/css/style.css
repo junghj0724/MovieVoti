@@ -1,0 +1,239 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+/* ... 기존 기본 설정 ... */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #292a32;
+    background-color: #f8f8f8;
+    min-width: 1200px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* 헤더 영역 */
+header {
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 62px;
+}
+
+.nav-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff2f6e;
+    margin-right: 30px;
+}
+
+.gnb ul {
+    display: flex;
+    gap: 20px;
+}
+
+.gnb a {
+    color: #7e7e7e;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.gnb a:hover, .gnb a.active {
+    color: #292a32;
+}
+
+/* ★ 추가된 헤더 스타일 (인라인 제거용) ★ */
+.gnb a.highlight {
+    color: #ff2f6e;
+    font-weight: bold;
+}
+
+.right-area {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+    background: #f5f5f7;
+    border-radius: 4px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+}
+
+.search-box i {
+    color: #888;
+    margin-right: 8px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.user-menu a {
+    font-size: 14px;
+    color: #7e7e7e;
+    margin-left: 15px;
+}
+
+.user-menu .btn-signup {
+    border: 1px solid #dbdbdb;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* ★ 추가된 유저 메뉴 스타일 ★ */
+.user-greeting {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #292a32;
+}
+
+.link-logout {
+    color: #ff2f6e !important;
+}
+
+/* 메인 콘텐츠 영역 */
+main {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #292a32;
+}
+
+/* 영화 리스트 (Grid Layout) */
+.movie-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개 */
+    gap: 20px;
+}
+
+.movie-card {
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+}
+
+/* ★ 포스터 사이즈 강제 고정 (호환성 개선 버전) ★ */
+.poster-wrapper {
+    position: relative;
+    width: 100%;
+    /* aspect-ratio 대신 padding-top 사용 (모든 브라우저 작동) */
+    padding-top: 150%; /* 가로 1 : 세로 1.5 비율 (2:3) */
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #eae9e8;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+}
+
+.poster-wrapper img {
+    /* 이미지를 padding으로 만든 공간에 절대 위치로 꽉 채움 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율 유지하며 꽉 채우기 (넘치면 자름) */
+    transition: transform 0.3s;
+}
+
+.movie-card:hover .poster-wrapper img {
+    transform: scale(1.05);
+}
+
+.rank-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.movie-info .title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-info .sub-info {
+    font-size: 13px;
+    color: #787878;
+    margin-bottom: 6px;
+}
+
+.movie-info .rating {
+    font-size: 13px;
+    color: #5a5a5a;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.movie-info .rating i {
+    color: #ff2f6e;
+}
+
+.movie-info .stat {
+    font-size: 12px;
+    color: #7e7e7e;
+    margin-top: 4px;
+}
