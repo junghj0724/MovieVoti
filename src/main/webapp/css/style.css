@@ -12,7 +12,7 @@ body {
     font-family: 'Noto Sans KR', sans-serif;
     color: #292a32;
     background-color: #f8f8f8;
-    min-width: 1200px;
+    min-width: 320px;
 }
 
 a {
@@ -151,7 +151,7 @@ section {
 /* 영화 리스트 (Grid Layout) */
 .movie-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개 */
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* 한 줄에 5개 */
     gap: 20px;
 }
 
@@ -236,4 +236,73 @@ section {
     font-size: 12px;
     color: #7e7e7e;
     margin-top: 4px;
+}
+
+@media screen and (max-width: 1200px) {
+    header {
+        height: auto;       /* 높이 고정(62px) 해제 -> 내용물만큼 늘어남 */
+        padding: 15px 0;    /* 위아래 여백 추가 */
+        position: relative; /* 고정(fixed) 해제 -> 화면 스크롤과 함께 움직임 */
+    }
+
+    .nav-container {
+        flex-wrap: wrap;       /* 공간 부족하면 줄바꿈 허용 */
+        justify-content: center; /* 요소들을 가운데로 모음 */
+        gap: 15px 30px;        /* 줄바꿈 시 위아래/좌우 간격 */
+    }
+
+    .right-area {
+        margin-left: 0;        /* 오른쪽 끝 강제 정렬 해제 (자연스럽게 흐르도록) */
+    }
+
+    main {
+        padding-top: 40px;     /* 헤더 고정이 풀렸으므로 본문 상단 여백 축소 */
+    }
+    
+    /* 영화 리스트도 좁아진 화면에 맞춰 4개로 조정 */
+    .movie-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* 2. 화면 폭 992px 이하 (태블릿 세로) */
+@media screen and (max-width: 992px) {
+    .movie-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    
+    .search-box {
+        width: 240px; /* 검색창 크기 조금 줄임 */
+    }
+}
+
+/* 3. 화면 폭 768px 이하 (모바일) */
+@media screen and (max-width: 768px) {
+    .nav-container {
+        flex-direction: column; /* 세로로 쭉 나열 */
+        align-items: center;    /* 가운데 정렬 */
+    }
+
+    .gnb ul {
+        flex-wrap: wrap;        /* 메뉴가 많으면 줄바꿈 */
+        justify-content: center;
+        gap: 10px 20px;
+    }
+
+    .right-area {
+        width: 100%;
+        justify-content: center;
+        flex-direction: column; /* 검색창과 로그인 버튼 세로 정렬 */
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .movie-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* 영화 2개씩 */
+        gap: 15px;
+    }
 }
