@@ -59,6 +59,17 @@
             
             <button type="submit" class="btn-submit dark">수정 완료</button>
         </form>
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+        
+        <div style="text-align: right;">
+            <form action="${pageContext.request.contextPath}/memberAction/delete" method="post">
+                <button type="submit" 
+                        onclick="return confirm('정말로 탈퇴하시겠습니까? 탈퇴 후에는 복구할 수 없습니다.');"
+                        style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                    회원 탈퇴
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

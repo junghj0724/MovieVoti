@@ -25,7 +25,7 @@
                     <c:if test="${not empty movie.audiAcc }">
                    		<p><strong>누적 관객:</strong> ${movie.audiAcc}</p>
                    	</c:if>
-                    <p><strong>평균 별점:</strong> ⭐ ${movie.voteAverage}</p>
+                    <p><strong>평균 별점:</strong> ⭐ ${movie.myRating}</p>
                 </div>
 
                 <div class="plot-box">

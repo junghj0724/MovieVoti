@@ -84,4 +84,26 @@ public class UserDAO {
         }
         return 0;
     }
+    
+    // 4. 회원 탈퇴
+    public int deleteUser(String userId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        int result = 0;
+        
+        String sql = "DELETE FROM USERS WHERE user_id = ?"; 
+
+        try {
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            
+            result = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt);
+        }
+        return result;
+    }
 }

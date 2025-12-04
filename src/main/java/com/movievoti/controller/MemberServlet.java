@@ -110,5 +110,27 @@ public class MemberServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/member/mypage.jsp?error=unknown");
             }
         }
+        
+        else if ("/delete".equals(action)) {
+            HttpSession session = request.getSession();
+            UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+            
+            if (loginUser == null) {
+                response.sendRedirect(request.getContextPath() + "/member/login.jsp");
+                return;
+            }
+
+            // DAO 호출하여 삭제 진행
+            int result = UserDAO.getInstance().deleteUser(loginUser.getUserId());
+            
+            if (result > 0) {
+                // 삭제 성공 시 세션 만료(로그아웃) 시키고 메인으로 이동
+                session.invalidate();
+                response.sendRedirect(request.getContextPath() + "/index.jsp?msg=deleted");
+            } else {
+                // 실패 시 다시 마이페이지로
+                response.sendRedirect(request.getContextPath() + "/member/mypage.jsp?error=delete_failed");
+            }
+        }
     }
 }
