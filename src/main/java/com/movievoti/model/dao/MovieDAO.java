@@ -75,6 +75,55 @@ public class MovieDAO {
         } catch (Exception e) { e.printStackTrace(); } 
         finally { DBManager.close(conn, pstmt); }
     }
+    
+    public void saveSearchResult(BoxOfficeMovie movie) {
+        String checkSql = "SELECT movie_id FROM MOVIES WHERE title = ?";
+        
+        // 신규 저장 시: 랭크와 예정작 여부는 기본값 0으로 저장
+        String insertSql = "INSERT INTO MOVIES (title, open_dt, audi_acc, poster_path, vote_average, overview, daily_rank, is_upcoming, genre, updated_at) VALUES (?, ?, ?, ?, ?, ?, 0, 0, ?, NOW())";
+        
+        // ★ 업데이트 시: open_dt, poster 등 정보만 갱신하고 'daily_rank', 'is_upcoming'은 건드리지 않음!
+        String updateSql = "UPDATE MOVIES SET open_dt=?, audi_acc=?, poster_path=?, vote_average=?, overview=?, genre=?, updated_at=NOW() WHERE title=?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(checkSql);
+            pstmt.setString(1, movie.getTitle());
+            rs = pstmt.executeQuery();
+            
+            boolean exists = rs.next();
+            DBManager.close(null, pstmt, rs);
+
+            if (exists) {
+                // 이미 있는 영화라면 -> 정보만 업데이트 (순위 유지)
+                pstmt = conn.prepareStatement(updateSql);
+                pstmt.setString(1, movie.getOpenDt());
+                pstmt.setString(2, movie.getAudiAcc());
+                pstmt.setString(3, movie.getPosterPath());
+                pstmt.setDouble(4, movie.getVoteAverage());
+                pstmt.setString(5, movie.getOverview());
+                pstmt.setString(6, movie.getGenre());
+                pstmt.setString(7, movie.getTitle());
+                pstmt.executeUpdate();
+            } else {
+                // 없는 영화라면 -> 신규 추가 (순위 0)
+                pstmt = conn.prepareStatement(insertSql);
+                pstmt.setString(1, movie.getTitle());
+                pstmt.setString(2, movie.getOpenDt());
+                pstmt.setString(3, movie.getAudiAcc());
+                pstmt.setString(4, movie.getPosterPath());
+                pstmt.setDouble(5, movie.getVoteAverage());
+                pstmt.setString(6, movie.getOverview());
+                pstmt.setString(7, movie.getGenre());
+                pstmt.executeUpdate();
+            }
+        } catch (Exception e) { e.printStackTrace(); } 
+        finally { DBManager.close(conn, pstmt); }
+    }
 
     public List<BoxOfficeMovie> getBoxOfficeList() {
         return getList("SELECT m.*, COALESCE((SELECT AVG(rating) FROM REVIEWS r WHERE r.movie_id = m.movie_id), 0.0) as my_rating FROM MOVIES m WHERE daily_rank > 0 ORDER BY daily_rank ASC");

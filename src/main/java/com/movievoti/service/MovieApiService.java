@@ -30,7 +30,7 @@ public class MovieApiService {
         private double voteAverage;
         private double myRating;
         private String trailerKey;
-        private String genre;          // ★ 추가됨: 장르
+        private String genre;
 
         // Getter & Setter
         public int getMovieId() { return movieId; }
@@ -43,9 +43,8 @@ public class MovieApiService {
         public void setOpenDt(String openDt) { this.openDt = openDt; }
         public String getTrailerKey() { return trailerKey; }
         public void setTrailerKey(String trailerKey) { this.trailerKey = trailerKey; }
-        
-        public String getGenre() { return genre; } // ★ 추가
-        public void setGenre(String genre) { this.genre = genre; } // ★ 추가
+        public String getGenre() { return genre; }
+        public void setGenre(String genre) { this.genre = genre; }
         
         public String getAudiAcc() { 
             if (audiAcc == null) return "";
@@ -71,6 +70,7 @@ public class MovieApiService {
         public void setMyRating(double myRating) { this.myRating = myRating; }
     }
 
+    // ★ [수정] 다시 심플해진 박스오피스 조회 (API 1번만 호출)
     public List<BoxOfficeMovie> getDailyBoxOffice() {
         List<BoxOfficeMovie> list = new ArrayList<>();
         try {
@@ -79,27 +79,36 @@ public class MovieApiService {
             cal.add(Calendar.DATE, -1);
             String targetDt = sdf.format(cal.getTime());
 
+            // 단순히 10개만 요청
             String koficUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
                             + "?key=" + KOFIC_API_KEY + "&targetDt=" + targetDt;
             
             String koficJson = requestApi(koficUrl);
             JsonObject root = JsonParser.parseString(koficJson).getAsJsonObject();
-            JsonArray dailyList = root.getAsJsonObject("boxOfficeResult").getAsJsonArray("dailyBoxOfficeList");
+            JsonElement boxOfficeResult = root.get("boxOfficeResult");
+            
+            if (boxOfficeResult != null && !boxOfficeResult.isJsonNull()) {
+                JsonArray dailyList = boxOfficeResult.getAsJsonObject().getAsJsonArray("dailyBoxOfficeList");
 
-            for (int i = 0; i < dailyList.size(); i++) {
-                JsonObject obj = dailyList.get(i).getAsJsonObject();
-                BoxOfficeMovie movie = new BoxOfficeMovie();
-                movie.setRank(obj.get("rank").getAsString());
-                movie.setTitle(obj.get("movieNm").getAsString());
-                movie.setOpenDt(obj.get("openDt").getAsString());
-                movie.setAudiAcc(obj.get("audiAcc").getAsString());
-                updateMovieInfoFromTmdb(movie, movie.getTitle());
-                list.add(movie);
+                for (int i = 0; i < dailyList.size(); i++) {
+                    JsonObject obj = dailyList.get(i).getAsJsonObject();
+                    BoxOfficeMovie movie = new BoxOfficeMovie();
+                    movie.setRank(obj.get("rank").getAsString());
+                    movie.setTitle(obj.get("movieNm").getAsString());
+                    movie.setOpenDt(obj.get("openDt").getAsString());
+                    movie.setAudiAcc(obj.get("audiAcc").getAsString());
+                    
+                    // TMDB 정보 업데이트
+                    updateMovieInfoFromTmdb(movie, movie.getTitle());
+                    
+                    list.add(movie);
+                }
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
     
+    // 개봉 예정작 (기존 유지)
     public List<BoxOfficeMovie> getUpcomingMovies() {
         List<BoxOfficeMovie> list = new ArrayList<>();
         try {
@@ -107,7 +116,9 @@ public class MovieApiService {
             String json = requestApi(tmdbUrl);
             JsonObject root = JsonParser.parseString(json).getAsJsonObject();
             JsonArray results = root.getAsJsonArray("results");
-            for (int i = 0; i < Math.min(results.size(), 5); i++) {
+            
+            // 필터링을 위해 넉넉히 20개 탐색 (Initializer에서 5개만 자름)
+            for (int i = 0; i < Math.min(results.size(), 20); i++) {
                 JsonObject obj = results.get(i).getAsJsonObject();
                 BoxOfficeMovie movie = new BoxOfficeMovie();
                 movie.setTitle(obj.get("title").getAsString());
@@ -121,10 +132,8 @@ public class MovieApiService {
         return list;
     }
 
-    // ★ [업그레이드] 장르, 상세 정보, 예고편 모두 가져오기
     public void getMovieDetail(BoxOfficeMovie movie) {
         try {
-            // 1. 검색으로 ID 찾기
             String encodedTitle = URLEncoder.encode(movie.getTitle(), "UTF-8");
             String searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + TMDB_API_KEY + "&language=ko-KR&page=1&query=" + encodedTitle;
             
@@ -136,25 +145,21 @@ public class MovieApiService {
                 JsonObject firstResult = results.get(0).getAsJsonObject();
                 int tmdbId = firstResult.get("id").getAsInt();
                 
-                // 2. [추가] 상세 정보 API 호출 (여기서 장르를 가져옴)
                 String detailUrl = "https://api.themoviedb.org/3/movie/" + tmdbId + "?api_key=" + TMDB_API_KEY + "&language=ko-KR";
                 String detailJson = requestApi(detailUrl);
                 JsonObject detailRoot = JsonParser.parseString(detailJson).getAsJsonObject();
 
-                // 기본 정보 갱신
                 if (!detailRoot.get("poster_path").isJsonNull()) movie.setPosterPath(detailRoot.get("poster_path").getAsString());
                 if (!detailRoot.get("overview").isJsonNull()) movie.setOverview(detailRoot.get("overview").getAsString());
                 movie.setVoteAverage(detailRoot.get("vote_average").getAsDouble());
                 
-                // ★ 장르 파싱
                 JsonArray genres = detailRoot.getAsJsonArray("genres");
                 List<String> genreNames = new ArrayList<>();
                 for(JsonElement g : genres) {
                     genreNames.add(g.getAsJsonObject().get("name").getAsString());
                 }
-                movie.setGenre(String.join(", ", genreNames)); // "액션, 모험, SF" 형태로 저장
+                movie.setGenre(String.join(", ", genreNames));
 
-                // 3. 예고편 가져오기
                 String videoUrl = "https://api.themoviedb.org/3/movie/" + tmdbId + "/videos?api_key=" + TMDB_API_KEY + "&language=ko-KR";
                 String videoJson = requestApi(videoUrl);
                 JsonObject videoRoot = JsonParser.parseString(videoJson).getAsJsonObject();
@@ -171,7 +176,6 @@ public class MovieApiService {
         } catch (Exception e) { e.printStackTrace(); }
     }
     
-    // [검색용]
     public List<BoxOfficeMovie> searchMovies(String keyword) {
         List<BoxOfficeMovie> list = new ArrayList<>();
         try {

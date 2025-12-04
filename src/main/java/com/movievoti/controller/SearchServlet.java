@@ -24,10 +24,9 @@ public class SearchServlet extends HttpServlet {
             List<BoxOfficeMovie> apiResults = apiService.searchMovies(keyword);
             
             // 2. 검색된 영화들을 우리 DB에 저장 (캐싱 & ID 생성)
-            // (이미 있으면 업데이트, 없으면 추가)
             for (BoxOfficeMovie movie : apiResults) {
-                // 검색 결과이므로 예정작 여부는 false(0)으로 처리하거나 별도 로직 적용
-                dao.upsertMovie(movie, false); 
+                // ★ [수정] upsertMovie 대신 순위를 보호하는 saveSearchResult 사용
+                dao.saveSearchResult(movie); 
             }
             
             // 3. 우리 DB에서 다시 조회 (movie_id를 포함한 데이터를 가져오기 위해)

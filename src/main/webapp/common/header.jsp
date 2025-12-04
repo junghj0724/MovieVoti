@@ -7,7 +7,7 @@
         <nav class="gnb">
             <ul>
                 <li><a href="${pageContext.request.contextPath}/index.jsp">홈</a></li>
-                <li><a href="#">박스오피스</a></li>
+                <!-- <li><a href="#">박스오피스</a></li> -->
                 <li><a href="${pageContext.request.contextPath}/memberAction/reviews">영화평가</a></li>
                 
                 <li><a href="${pageContext.request.contextPath}/member/timeline.jsp" class="highlight">타임라인</a></li>
