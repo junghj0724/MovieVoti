@@ -238,6 +238,58 @@ section {
     margin-top: 4px;
 }
 
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 9999; /* 모달창(z-index:1000)보다 더 위에 뜨도록 설정 */
+    
+    /* 입력창 바로 아래에 위치 */
+    top: 100%;
+    left: 0;
+    right: 0;
+    
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto; /* 내용이 많으면 스크롤 */
+    
+    border-radius: 0 0 8px 8px; /* 아래쪽 모서리만 둥글게 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+}
+
+/* 마우스 올렸을 때 효과 */
+.autocomplete-items div:hover {
+    background-color: #f1f3f5;
+}
+
+/* 자동완성 썸네일 이미지 */
+.autocomplete-thumb {
+    width: 30px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-color: #eee;
+}
+
+/* 검색어 강조 텍스트 (선택사항) */
+.autocomplete-items strong {
+    color: #333;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 1200px) {
     header {
         height: auto;       /* 높이 고정(62px) 해제 -> 내용물만큼 늘어남 */

@@ -1,118 +1,186 @@
 @charset "UTF-8";
 
-/* 타임라인 전용 스타일 */
+/* =========================================
+   1. 타임라인 레이아웃
+   ========================================= */
 .timeline-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 60px 20px;
+    position: relative;
+    overflow-x: hidden;
 }
 
-.timeline-header {
-    margin-bottom: 40px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-}
-
+/* 기존 스타일 간섭 제거 */
 .timeline-list {
-    position: relative;
-    padding-left: 20px;
+    padding: 0; margin: 0; list-style: none;
 }
 
-/* 수직선 */
-.timeline-list::before {
+/* 타임라인 헤더 */
+.timeline-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+.timeline-header h2 { font-size: 2rem; margin-bottom: 10px; color: #333; }
+.timeline-header p { color: #666; font-size: 1rem; }
+
+/* 중앙 수직선 */
+.timeline-container::after {
     content: '';
     position: absolute;
-    top: 0;
+    width: 4px;
+    background-color: #eee;
+    top: 140px;
     bottom: 0;
-    left: 6px;
-    width: 2px;
-    background: #e5e5e5;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
 }
 
+/* 개별 아이템 (카드) */
 .timeline-item {
+    padding: 10px 40px;
     position: relative;
-    margin-bottom: 40px;
-    padding-left: 30px;
+    background-color: inherit;
+    width: 50%;
+    box-sizing: border-box;
 }
 
-/* 동그라미 점 */
-.timeline-item::before {
+/* 왼쪽/오른쪽 배치 */
+.left { left: 0; }
+.right { left: 50%; }
+
+/* 타임라인 점 (Node) */
+.timeline-item::after {
     content: '';
     position: absolute;
-    left: -1px;
-    top: 5px;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    
+    right: -10px;
+    background-color: #fff;
+    border: 4px solid #ff4e50;
+    
+    top: 20px; /* 정렬 기준점 */
+    
     border-radius: 50%;
-    background: #ff2f6e;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 1px #e5e5e5;
     z-index: 1;
+    transition: background-color 0.3s;
 }
+.timeline-item:hover::after { background-color: #ff4e50; }
 
-.date-label {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 8px;
-    font-weight: 500;
-}
+.right::after { left: -10px; }
 
-.diary-card {
-    display: flex;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.diary-poster {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
-}
-
-.diary-content {
+/* =========================================
+   2. 일기 카드 디자인
+   ========================================= */
+.timeline-content {
     padding: 20px;
-    flex: 1;
+    background-color: white;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #f0f0f0;
+}
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-.movie-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
+/* 말풍선 꼬리 */
+.left .timeline-content::before {
+    content: " ";
+    height: 0; position: absolute; width: 0; z-index: 1;
+    top: 20px; /* 동그라미와 높이 일치 */
+    right: -10px;
+    border: medium solid white;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent white;
+}
+.right .timeline-content::before {
+    content: " ";
+    height: 0; position: absolute; width: 0; z-index: 1;
+    top: 20px; /* 동그라미와 높이 일치 */
+    left: -10px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
 }
 
-.meta-info {
-    font-size: 13px;
-    color: #7e7e7e;
-    margin-bottom: 15px;
-}
-
-.comment-text {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #333;
-}
-
-/* ★ 추가된 부분: 데이터 없음 메시지 스타일 ★ */
-.empty-msg { 
-    text-align: center; 
-    padding: 100px 0; 
-    color: #888; 
-}
-.empty-msg i {
-    font-size: 40px; 
-    margin-bottom: 15px; 
-    color: #ddd;
-}
-.empty-msg p {
-    font-size: 16px;
-    line-height: 1.6;
-}
-.empty-msg a {
-    color: #ff2f6e; 
-    font-weight: bold; 
-    margin-top: 15px; 
+/* 날짜 배지 */
+.date-badge {
     display: inline-block;
+    background: #333;
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 텍스트 스타일 */
+.movie-title { font-size: 1.1rem; font-weight: bold; margin: 0; color: #333; }
+.diary-mood { font-size: 1.5rem; margin-left: 8px; cursor: help; }
+
+/* 태그 박스 스타일 */
+.diary-tags { margin: 10px 0; }
+.diary-tags span { 
+    display: inline-block; 
+    background: #f8f9fa; 
+    padding: 4px 10px; 
+    border-radius: 15px; 
+    font-size: 0.85rem; 
+    color: #555; 
+    margin-right: 5px; 
+    border: 1px solid #eee; 
+}
+
+.diary-tags i { 
+    color: #ff4e50; 
+    margin-right: 4px; 
+}
+
+.comment-text { font-size: 0.95rem; line-height: 1.6; color: #444; background: #fafafa; padding: 12px; border-radius: 8px; margin-top: 10px; font-style: italic; }
+
+/* 기타 UI */
+.empty-msg { text-align: center; padding: 100px 0; color: #888; width: 100%; position: relative; z-index: 2; background: #fff; }
+.empty-msg i { font-size: 50px; margin-bottom: 20px; color: #ddd; }
+.empty-msg p { font-size: 1.1rem; margin-bottom: 20px; }
+.empty-msg a { color: #ff4e50; text-decoration: none; font-weight: bold; border-bottom: 1px solid #ff4e50; }
+
+.fab-btn {
+    position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px;
+    background: linear-gradient(135deg, #ff4e50, #f9d423); color: white; border-radius: 50%;
+    text-align: center; line-height: 60px; font-size: 24px; box-shadow: 0 4px 15px rgba(255, 78, 80, 0.4);
+    cursor: pointer; z-index: 100; transition: transform 0.3s;
+}
+.fab-btn:hover { transform: scale(1.1) rotate(90deg); }
+
+dialog {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0;
+    width: 90%; max-width: 500px; border: none; border-radius: 12px; padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3); background-color: #fff; box-sizing: border-box; z-index: 1000;
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
+.modal-form input, .modal-form select, .modal-form textarea {
+    width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem;
+}
+.modal-btns { text-align: right; margin-top: 10px; }
+.btn-cancel { padding: 10px 20px; background: #f1f3f5; border: none; border-radius: 6px; cursor: pointer; margin-right: 10px; }
+.btn-save { padding: 10px 20px; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+/* 모바일 반응형 */
+@media screen and (max-width: 768px) {
+    .timeline-container::after { left: 30px; }
+    .timeline-item { width: 100%; padding-left: 70px; padding-right: 20px; }
+    .timeline-item::after { left: 0; }
+    .right { left: 0; }
+    .left .timeline-content::before, .right .timeline-content::before {
+        left: -10px; border-width: 10px 10px 10px 0; border-color: transparent white transparent transparent;
+    }
 }
