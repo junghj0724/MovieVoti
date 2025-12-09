@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/timeline.css?v=3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/timeline.css?v=5">
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
@@ -37,6 +37,11 @@
             <c:forEach var="diary" items="${diaryList}" varStatus="status">
                 <div class="timeline-item ${status.index % 2 == 0 ? 'left' : 'right'}">
                     <div class="timeline-content">
+                        
+                        <button type="button" class="btn-delete" onclick="deleteDiary(${diary.diaryId})" title="일기 삭제">
+                            <i class="fas fa-trash-can"></i>
+                        </button>
+
                         <c:choose>
                             <c:when test="${not empty diary.posterPath}">
                                 <img src="https://image.tmdb.org/t/p/w200${diary.posterPath}" 
@@ -135,7 +140,7 @@
         function openDiaryModal() {
             const dateInput = document.querySelector('input[name="watchedDate"]');
             if (!dateInput.value) {
-                dateInput.value = new Date().toISOString().substring(0, 10);
+                dateInput.value = new Date().toISOString().substring(0, 10); // 오늘 날짜 기본 설정
             }
             document.getElementById('diaryModal').showModal();
         }
@@ -180,7 +185,6 @@
             data.forEach(movie => {
                 const itemDiv = document.createElement("DIV");
                 
-                // [수정] 포스터 경로에 TMDB 도메인 추가
                 let poster = movie.posterPath 
                              ? 'https://image.tmdb.org/t/p/w92' + movie.posterPath 
                              : 'https://placehold.co/30x45?text=NoImg';
@@ -219,6 +223,25 @@
         document.addEventListener("click", function (e) {
             closeAllLists(e.target);
         });
+
+        // === 3. 일기 삭제 함수 (★ 추가됨) ===
+        function deleteDiary(diaryId) {
+            if (confirm("정말로 이 추억을 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
+                // 삭제 요청을 보내기 위해 동적으로 폼 생성 (POST 방식)
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '${pageContext.request.contextPath}/timeline/delete';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'diaryId';
+                input.value = diaryId;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
     </script>
 </body>
 </html>

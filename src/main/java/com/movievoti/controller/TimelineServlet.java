@@ -58,6 +58,15 @@ public class TimelineServlet extends HttpServlet {
             DiaryDAO.getInstance().insertDiary(diary);
             
             response.sendRedirect(request.getContextPath() + "/timeline/list");
+        } 
+        else if ("/delete".equals(action)) {
+            String diaryIdStr = request.getParameter("diaryId");
+            if (diaryIdStr != null) {
+                int diaryId = Integer.parseInt(diaryIdStr);
+                DiaryDAO.getInstance().deleteDiary(diaryId);
+            }
+            // 삭제 후 타임라인 목록으로 복귀
+            response.sendRedirect(request.getContextPath() + "/timeline/list");
         }
     }
 }

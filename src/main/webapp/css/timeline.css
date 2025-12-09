@@ -174,6 +174,27 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
 .btn-cancel { padding: 10px 20px; background: #f1f3f5; border: none; border-radius: 6px; cursor: pointer; margin-right: 10px; }
 .btn-save { padding: 10px 20px; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer; }
 
+/* ★ [추가] 삭제 버튼 스타일 */
+.btn-delete {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    
+    background: none;
+    border: none;
+    color: #ced4da; /* 평소엔 연한 회색 */
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 5px;
+    z-index: 10; /* 다른 요소보다 위에 오도록 */
+}
+
+.btn-delete:hover {
+    color: #ff4e50; /* 마우스 올리면 빨간색 */
+    transform: scale(1.1); /* 살짝 커짐 */
+}
+
 /* 모바일 반응형 */
 @media screen and (max-width: 768px) {
     .timeline-container::after { left: 30px; }

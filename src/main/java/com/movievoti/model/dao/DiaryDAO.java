@@ -61,4 +61,22 @@ public class DiaryDAO {
         finally { DBManager.close(conn, pstmt, rs); }
         return list;
     }
+    
+ // 일기 삭제
+    public int deleteDiary(int diaryId) {
+        String sql = "DELETE FROM MOVIE_DIARY WHERE diary_id = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = DBManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, diaryId);
+            return pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(conn, pstmt, null);
+        }
+        return 0;
+    }
 }

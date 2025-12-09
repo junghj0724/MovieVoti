@@ -10,7 +10,7 @@
                 <!-- <li><a href="#">박스오피스</a></li> -->
                 <li><a href="${pageContext.request.contextPath}/memberAction/reviews">영화평가</a></li>
                 
-                <li><a href="${pageContext.request.contextPath}/member/timeline.jsp" class="highlight">타임라인</a></li>
+                <li><a href="${pageContext.request.contextPath}/timeline/list" class="highlight">타임라인</a></li>
             </ul>
         </nav>
         <div class="right-area">
